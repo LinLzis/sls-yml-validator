@@ -1,0 +1,27 @@
+{
+  "name": "component-validator",
+  "version": "1.0.0",
+  "description": "serlverless component validator demo",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ts",
+    "validator"
+  ],
+  "author": "Avril Li",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.0.19",
+    "ajv": "^6.12.3",
+    "babelify": "^10.0.0",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "typescript": "^3.9.6",
+    "typescript-json-schema": "^0.42.0",
+    "vinyl-buffer": "^1.0.1"
+  }
+}
