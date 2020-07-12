@@ -15,9 +15,9 @@ const validateDataType = (data: any, type: string) => {
 
   const schema = require(`../src/datas/${type}.json`);
 
-  var ajv = new Ajv({ extendRefs: true });
-  var valid = ajv.validate(schema, data);
-  if (!valid) {
+  let ajv = new Ajv({ extendRefs: true });
+  isValid = ajv.validate(schema, data);
+  if (!isValid) {
     // console.log(JSON.stringify(ajv.errors));
     // TODO: format error message
     // E.g.:  [{"keyword":"enum","dataPath":".inputs.protocol[0]","schemaPath":"#/properties/protocol/items/enum","params":{"allowedValues":["http","https"]},"message":"should be equal to one of the allowed values"}]
@@ -38,9 +38,11 @@ const validateDataType = (data: any, type: string) => {
     // assert by keyword then format message with dataPath+message
     errMsg = ajv.errors.map((item: AjvError) => {
       if (item?.keyword === "enum") {
-        return `Param path:${item.dataPath}, ${item.message}:${item.params.allowedValues.toString()}`;
+        return `Param path:${item.dataPath}, ${
+          item.message
+        }:${item.params.allowedValues.toString()}`;
       } else if (item?.keyword === "anyOf") {
-        return `Param path:${item.dataPath}, should match one fo the target schema`;
+        return `Param path:${item.dataPath}, should match one of the target schema`;
       } else {
         return `Param path:${item.dataPath}, ${item.message}`;
       }
@@ -57,19 +59,22 @@ export function validate(data: any): any {
     return { isValid: false, errMsg: ["component is required."] };
   } else {
     const validateDataTypeResult = validateDataType(data, data.component);
-    console.log(validateDataTypeResult);
+    // console.log(validateDataTypeResult);
 
     const validateDataValueResult = validateValues(data);
-    console.log(validateDataValueResult);
+    // console.log(validateDataValueResult);
 
     const errorMessages = validateDataTypeResult.errMsg.concat(
       validateDataValueResult.errMsg
     );
 
-    return {
-      isValid: validateDataTypeResult.isValid && validateDataValueResult.errMsg,
+    const result = {
+      isValid: validateDataTypeResult.isValid && validateDataValueResult.isValid,
       errMsg: errorMessages,
     };
+    console.log(result);
+
+    return result;
   }
 }
 
@@ -80,7 +85,7 @@ const data = {
   component: "cos",
   name: "cosDemo",
   inputs: {
-    src: "./files",
+    src: './src',
     targetDir: "/",
     website: false,
     bucket: "my-bucket",

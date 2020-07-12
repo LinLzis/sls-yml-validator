@@ -36,7 +36,7 @@ export function validateValues(data: any) {
     isSrcValid = false;
   }
   if (!isSrcValid) {
-    errMsg.push("src param is incorrect");
+    errMsg.push(`Param path:.inputs.src, param format is incorrect`);
   }
 
   //TODO: others special value validate
