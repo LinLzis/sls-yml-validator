@@ -47,7 +47,7 @@ module.exports = {
       '@semantic-release/git',
       {
         assets: ['package.json', 'src/**', 'CHANGELOG.md'],
-        message: 'chore(release): version ${nextRelease.version} \n\n${nextRelease.notes}'
+        message: 'chore(release): version ${nextRelease.version}'
       }
     ],
     [
