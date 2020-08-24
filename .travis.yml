@@ -18,4 +18,4 @@ jobs:
         provider: script
         skip_cleanup: true
         script:
-          - npm run release
+          - npx -p @semantic-release/changelog -p @semantic-release/git -p semantic-release semantic-release
