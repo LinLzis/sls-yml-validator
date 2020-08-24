@@ -18,4 +18,4 @@ jobs:
         provider: script
         skip_cleanup: true
         script:
-          - npm install @semantic-release/changelog @semantic-release/git semantic-release && npm run release
+          - npm run release
