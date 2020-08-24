@@ -4,9 +4,9 @@
   "description": "serlverless component validator demo",
   "main": "./dist/main.js",
   "scripts": {
-    "test": "npm run prettier",
-    "lint": "eslint --ext .js,.ts,.tsx .",
-    "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",
+    "test": "npm run lint && npm run prettier",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --fix --ext .js .",
     "prettier": "prettier --check '**/*.{css,html,js,json,md,yaml,yml}'",
     "prettier:fix": "prettier --write '**/*.{css,html,js,json,md,yaml,yml}'",
     "release": "semantic-release",
