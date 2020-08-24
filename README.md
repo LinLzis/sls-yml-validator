@@ -1,6 +1,6 @@
 # sls-yml-validator
 
-Serverless component yml validator MVP
+Serverless component yml validator MVP. Just a test demo.
 
 ## install dependence firstly
 
