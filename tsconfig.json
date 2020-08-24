@@ -1,11 +1,7 @@
 {
-    "files": [
-        "src/main.ts",
-        "src/builder.ts",
-        "src/validator.ts",
-    ],
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "target": "es5"
-    }
+  "files": ["src/main.ts", "src/builder.ts", "src/validator.ts"],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "target": "es5"
+  }
 }

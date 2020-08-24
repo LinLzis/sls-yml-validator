@@ -1,22 +1,22 @@
-const Ajv = require("ajv");
-import { validateValues } from "./validator";
+const Ajv = require('ajv')
+import { validateValues } from './validator'
 
 interface AjvError {
-  keyword: string;
-  dataPath: string;
-  schemaPath: string;
-  params: any;
-  message: string;
+  keyword: string
+  dataPath: string
+  schemaPath: string
+  params: any
+  message: string
 }
 
 const validateDataType = (data: any, type: string) => {
-  let isValid: boolean = true;
-  let errMsg: string[] = [];
+  let isValid: boolean = true
+  let errMsg: string[] = []
 
-  const schema = require(`../src/datas/${type}.json`);
+  const schema = require(`../src/datas/${type}.json`)
 
-  let ajv = new Ajv({ extendRefs: true });
-  isValid = ajv.validate(schema, data);
+  const ajv = new Ajv({ extendRefs: true })
+  isValid = ajv.validate(schema, data)
   if (!isValid) {
     // console.log(JSON.stringify(ajv.errors));
     // TODO: format error message
@@ -37,83 +37,79 @@ const validateDataType = (data: any, type: string) => {
 
     // assert by keyword then format message with dataPath+message
     errMsg = ajv.errors.map((item: AjvError) => {
-      if (item?.keyword === "enum") {
+      if (item?.keyword === 'enum') {
         return `Param path:${item.dataPath}, ${
           item.message
-        }:${item.params.allowedValues.toString()}`;
-      } else if (item?.keyword === "anyOf") {
-        return `Param path:${item.dataPath}, should match one of the target schema`;
-      } else {
-        return `Param path:${item.dataPath}, ${item.message}`;
+        }:${item.params.allowedValues.toString()}`
+      } else if (item?.keyword === 'anyOf') {
+        return `Param path:${item.dataPath}, should match one of the target schema`
       }
-    });
+      return `Param path:${item.dataPath}, ${item.message}`
+    })
   }
 
-  return { isValid, errMsg };
-};
+  return { isValid, errMsg }
+}
 
 // need to build json schema files at first
 export function validate(data: any): any {
   if (!data?.component) {
-    console.log("component is required.");
-    return { isValid: false, errMsg: ["component is required."] };
-  } else {
-    const validateDataTypeResult = validateDataType(data, data.component);
-    // console.log(validateDataTypeResult);
-
-    const validateDataValueResult = validateValues(data);
-    // console.log(validateDataValueResult);
-
-    const errorMessages = validateDataTypeResult.errMsg.concat(
-      validateDataValueResult.errMsg
-    );
-
-    const result = {
-      isValid: validateDataTypeResult.isValid && validateDataValueResult.isValid,
-      errMsg: errorMessages,
-    };
-    console.log(result);
-
-    return result;
+    console.log('component is required.')
+    return { isValid: false, errMsg: ['component is required.'] }
   }
+  const validateDataTypeResult = validateDataType(data, data.component)
+  // console.log(validateDataTypeResult);
+
+  const validateDataValueResult = validateValues(data)
+  // console.log(validateDataValueResult);
+
+  const errorMessages = validateDataTypeResult.errMsg.concat(validateDataValueResult.errMsg)
+
+  const result = {
+    isValid: validateDataTypeResult.isValid && validateDataValueResult.isValid,
+    errMsg: errorMessages
+  }
+  console.log(result)
+
+  return result
 }
 
 const data = {
-  org: "orgDemo",
-  app: "appDemo",
-  stage: "dev",
-  component: "cos",
-  name: "cosDemo",
+  org: 'orgDemo',
+  app: 'appDemo',
+  stage: 'dev',
+  component: 'cos',
+  name: 'cosDemo',
   inputs: {
     src: './src',
-    targetDir: "/",
+    targetDir: '/',
     website: false,
-    bucket: "my-bucket",
-    region: "ap-guangzhou",
-    protocol: ["https"],
+    bucket: 'my-bucket',
+    region: 'ap-guangzhou',
+    protocol: ['https'],
     acl: {
-      permissions: "private",
+      permissions: 'private',
       grantRead: 'id="1234567"',
       grantWrite: 'id="1234567"',
-      grantFullControl: 'id="1234567"',
+      grantFullControl: 'id="1234567"'
     },
     cors: [
       {
-        id: "abc",
+        id: 'abc',
         maxAgeSeconds: 10,
-        allowedMethods: ["GET"],
-        allowedOrigins: ["https://tencent.com"],
-        allowedHeaders: ["FIRST_ALLOWED_HEADER"],
-        exposeHeaders: ["FIRST_EXPOSED_HEADER}"],
-      },
+        allowedMethods: ['GET'],
+        allowedOrigins: ['https://tencent.com'],
+        allowedHeaders: ['FIRST_ALLOWED_HEADER'],
+        exposeHeaders: ['FIRST_EXPOSED_HEADER}']
+      }
     ],
     tags: [
       {
-        key: "abc",
-        value: "xyz",
-      },
-    ],
-  },
-};
+        key: 'abc',
+        value: 'xyz'
+      }
+    ]
+  }
+}
 
-validate(data);
+validate(data)

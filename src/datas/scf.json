@@ -1,1 +1,437 @@
-{"type":"object","properties":{"org":{"type":"string"},"app":{"type":"string"},"stage":{"type":"string"},"component":{"type":"string"},"name":{"type":"string"},"inputs":{"$ref":"#/definitions/ScfInput"}},"required":["component","inputs","name"],"definitions":{"CosInput":{"type":"object","properties":{"bucket":{"type":"string"},"protocol":{"description":"Protocol content","minItems":1,"maxItems":2,"type":"array","items":{"enum":["http","https"],"type":"string"}},"targetDir":{"type":"string"},"website":{"type":"boolean"},"acl":{"$ref":"#/definitions/Acl"},"cors":{"type":"array","items":{"$ref":"#/definitions/Cors"}},"tags":{"type":"array","items":{"$ref":"#/definitions/Tag"}},"src":{"anyOf":[{"$ref":"#/definitions/BucketSrc"},{"$ref":"#/definitions/ZiptSrc"},{"type":"string"}]},"region":{"$ref":"#/definitions/Region"},"runtime":{"type":"string"}},"required":["bucket","region"]},"Acl":{"type":"object","properties":{"permissions":{"enum":["authenticated-read","private","public-read","public-read-write"],"type":"string"},"grantRead":{"description":"grant id, e.g:id=\"1234567\"","pattern":"^id","type":"string"},"grantWrite":{"type":"string"},"grantFullControl":{"type":"string"}}},"Cors":{"type":"object","properties":{"id":{"type":"string"},"maxAgeSeconds":{"description":"设置OPTIONS请求得到结果的有效期","type":"integer"},"allowedMethods":{"type":"array","items":{"enum":["DELETE","GET","HEAD","POST","PUT"],"type":"string"}},"allowedOrigins":{"type":"array","items":{"type":"string"}},"allowedHeaders":{"type":"array","items":{"type":"string"}},"exposeHeaders":{"type":"array","items":{"type":"string"}}},"required":["allowedHeaders","allowedMethods","allowedOrigins","exposeHeaders","maxAgeSeconds"]},"Tag":{"type":"object","properties":{"key":{"type":"string"},"value":{"type":"string"}},"required":["key","value"]},"BucketSrc":{"type":"object","properties":{"bucket":{"type":"string"},"object":{"type":"string"}},"required":["bucket","object"]},"ZiptSrc":{"type":"object","properties":{"src":{"type":"string"},"bucket":{"type":"string"},"exclude":{"type":"array","items":{"type":"string"}}},"required":["src"]},"Region":{"enum":["ap-beijing","ap-chengdu","ap-guangzhou","ap-hongkong","ap-mumbai","ap-shanghai","ap-shanghai-fsi","ap-shenzhen-fsi","ap-singapore","ap-tokyo","na-siliconvalley","na-toronto"],"type":"string"},"ScfInput":{"type":"object","properties":{"src":{"anyOf":[{"$ref":"#/definitions/BucketSrc"},{"$ref":"#/definitions/ZiptSrc"},{"type":"string"}]},"runtime":{"$ref":"#/definitions/NodeRuntime"},"handler":{"type":"string"},"name":{"type":"string"},"namesapce":{"type":"string"},"enableRoleAuth":{"type":"boolean"},"role":{"type":"string"},"events":{"anyOf":[{"type":"array","items":{"$ref":"#/definitions/TimerTrigger"}},{"type":"array","items":{"$ref":"#/definitions/ApiGwTrigger"}},{"type":"array","items":{"$ref":"#/definitions/CosTrigger"}},{"type":"array","items":{"$ref":"#/definitions/CmqTigger"}},{"type":"array","items":{"$ref":"#/definitions/KfkTrigger"}}]},"description":{"type":"string"},"memorySize":{"description":"memory size scope: 64、128MB-3072MB,以128MB为阶梯","minimum":64,"maximum":3072,"type":"number"},"timeout":{"description":"timeout scope: 1~900s","minimum":1,"maximum":900,"type":"number"},"environment":{"$ref":"#/definitions/EnvVariable"},"vpcConfig":{"$ref":"#/definitions/VpcConfig"},"layers":{"$ref":"#/definitions/Layer"},"deadLetter":{"$ref":"#/definitions/DeadLetter"},"cls":{"$ref":"#/definitions/Cls"},"eip":{"type":"boolean"},"tags":{"type":"array","items":{"$ref":"#/definitions/Tag"}},"traffic":{"description":"traffic scope: 0~1，e.g.: 80% set to 0.8","minimum":0,"maximum":1,"type":"number"},"region":{"$ref":"#/definitions/Region"}},"required":["handler","name","region","runtime","src"]},"NodeRuntime":{"enum":["Nodejs10.15","Nodejs12.16","Nodejs6.10","Nodejs8.9"],"type":"string"},"TimerTrigger":{"type":"object","properties":{"timer":{"type":"object","properties":{"name":{"type":"string"},"parameters":{"type":"object","properties":{"cronExpression":{"type":"string"},"enable":{"type":"boolean"},"argument":{"type":"object","properties":{},"additionalProperties":true}},"required":["cronExpression"]}},"required":["name","parameters"]}},"required":["timer"]},"ApiGwTrigger":{"type":"object","properties":{"apigw":{"type":"object","properties":{"name":{"type":"string"},"parameters":{"$ref":"#/definitions/GwParam"}},"required":["name","parameters"]}},"required":["apigw"]},"GwParam":{"type":"object","properties":{"endpoints":{"type":"array","items":{"$ref":"#/definitions/Endpoint"}},"environment":{"$ref":"#/definitions/Environment"},"protocols":{"type":"array","items":{"enum":["http","https"],"type":"string"}},"description":{"type":"string"},"serviceId":{"type":"string"},"serviceName":{"type":"string"}},"required":["endpoints","environment"]},"Endpoint":{"type":"object","properties":{"path":{"type":"string"},"method":{"$ref":"#/definitions/HttpMethod"},"apiId":{"type":"string"},"description":{"type":"string"},"enableCORS":{"type":"boolean"},"responseType":{"enum":["BINARY","HTML","JSON","TEST","XML"],"type":"string"},"serviceTimeout":{"type":"integer"},"param":{"$ref":"#/definitions/FrontendParam"},"function":{"$ref":"#/definitions/ScfParam"},"usagePlan":{"$ref":"#/definitions/UsagePlanConfig"},"auth":{"$ref":"#/definitions/AuthConfig"}},"required":["method","path","serviceTimeout"]},"HttpMethod":{"enum":["DELETE","GET","HEAD","POST","PUT"],"type":"string"},"FrontendParam":{"type":"object","properties":{"name":{"type":"string"},"position":{"type":"string"},"required":{"enum":["FALSE","TRUE"],"type":"string"},"type":{"type":"string"},"defaultValue":{"type":"string"},"desc":{"type":"string"}}},"ScfParam":{"type":"object","properties":{"isIntegratedResponse":{"type":"boolean"},"functionQualifier":{"type":"string"}}},"UsagePlanConfig":{"type":"object","properties":{"usagePlanId":{"type":"string"},"usagePlanName":{"type":"string"},"usagePlanDesc":{"type":"string"},"maxRequestNum":{"type":"integer"}}},"AuthConfig":{"type":"object","properties":{"secretName":{"type":"string"},"secretIds":{"type":"string"}},"required":["secretName"]},"Environment":{"enum":["prepub","release","test"],"type":"string"},"CosTrigger":{"type":"object","properties":{"cos":{"type":"object","properties":{"name":{"type":"string"},"parameters":{"$ref":"#/definitions/CosParam"}},"required":["name","parameters"]}},"required":["cos"]},"CosParam":{"type":"object","properties":{"bucket":{"type":"string"},"filter":{"type":"object","properties":{"prefix":{"type":"string"},"suffix":{"type":"string"}},"required":["prefix","suffix"]},"events":{"type":"string"},"enable":{"type":"boolean"}},"required":["bucket","events","filter"]},"CmqTigger":{"type":"object","properties":{"cmq":{"type":"object","properties":{"name":{"type":"string"},"parameters":{"type":"object","properties":{"name":{"type":"string"},"enable":{"type":"boolean"}},"required":["name"]}},"required":["name","parameters"]}},"required":["cmq"]},"KfkTrigger":{"type":"object","properties":{"ckafka":{"type":"object","properties":{"name":{"type":"string"},"parameters":{"$ref":"#/definitions/KfkParam"}},"required":["name","parameters"]}},"required":["ckafka"]},"KfkParam":{"type":"object","properties":{"name":{"type":"string"},"topic":{"type":"string"},"maxMsgNum":{"type":"integer"},"offset":{"type":"string"},"enable":{"type":"boolean"}},"required":["maxMsgNum","name","offset","topic"]},"EnvVariable":{"type":"object","properties":{"variables":{"type":"array","items":{"type":"object","properties":{},"additionalProperties":true}}},"required":["variables"]},"VpcConfig":{"type":"object","properties":{"vpcId":{"type":"string"},"subnetId":{"type":"string"}},"required":["subnetId","vpcId"]},"Layer":{"type":"object","properties":{"name":{"type":"string"},"version":{"type":"string"}}},"DeadLetter":{"type":"object","properties":{"type":{"type":"string"},"name":{"type":"string"},"filterType":{"type":"string"}},"required":["name","type"]},"Cls":{"type":"object","properties":{"logsetId":{"type":"string"},"topicId":{"type":"string"}},"required":["logsetId","topicId"]}},"$schema":"http://json-schema.org/draft-07/schema#"}
+{
+  "type": "object",
+  "properties": {
+    "org": { "type": "string" },
+    "app": { "type": "string" },
+    "stage": { "type": "string" },
+    "component": { "type": "string" },
+    "name": { "type": "string" },
+    "inputs": { "$ref": "#/definitions/ScfInput" }
+  },
+  "required": ["component", "inputs", "name"],
+  "definitions": {
+    "CosInput": {
+      "type": "object",
+      "properties": {
+        "bucket": { "type": "string" },
+        "protocol": {
+          "description": "Protocol content",
+          "minItems": 1,
+          "maxItems": 2,
+          "type": "array",
+          "items": { "enum": ["http", "https"], "type": "string" }
+        },
+        "targetDir": { "type": "string" },
+        "website": { "type": "boolean" },
+        "acl": { "$ref": "#/definitions/Acl" },
+        "cors": { "type": "array", "items": { "$ref": "#/definitions/Cors" } },
+        "tags": { "type": "array", "items": { "$ref": "#/definitions/Tag" } },
+        "src": {
+          "anyOf": [
+            { "$ref": "#/definitions/BucketSrc" },
+            { "$ref": "#/definitions/ZiptSrc" },
+            { "type": "string" }
+          ]
+        },
+        "region": { "$ref": "#/definitions/Region" },
+        "runtime": { "type": "string" }
+      },
+      "required": ["bucket", "region"]
+    },
+    "Acl": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "enum": ["authenticated-read", "private", "public-read", "public-read-write"],
+          "type": "string"
+        },
+        "grantRead": {
+          "description": "grant id, e.g:id=\"1234567\"",
+          "pattern": "^id",
+          "type": "string"
+        },
+        "grantWrite": { "type": "string" },
+        "grantFullControl": { "type": "string" }
+      }
+    },
+    "Cors": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "maxAgeSeconds": {
+          "description": "设置OPTIONS请求得到结果的有效期",
+          "type": "integer"
+        },
+        "allowedMethods": {
+          "type": "array",
+          "items": {
+            "enum": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+            "type": "string"
+          }
+        },
+        "allowedOrigins": { "type": "array", "items": { "type": "string" } },
+        "allowedHeaders": { "type": "array", "items": { "type": "string" } },
+        "exposeHeaders": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": [
+        "allowedHeaders",
+        "allowedMethods",
+        "allowedOrigins",
+        "exposeHeaders",
+        "maxAgeSeconds"
+      ]
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "required": ["key", "value"]
+    },
+    "BucketSrc": {
+      "type": "object",
+      "properties": {
+        "bucket": { "type": "string" },
+        "object": { "type": "string" }
+      },
+      "required": ["bucket", "object"]
+    },
+    "ZiptSrc": {
+      "type": "object",
+      "properties": {
+        "src": { "type": "string" },
+        "bucket": { "type": "string" },
+        "exclude": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["src"]
+    },
+    "Region": {
+      "enum": [
+        "ap-beijing",
+        "ap-chengdu",
+        "ap-guangzhou",
+        "ap-hongkong",
+        "ap-mumbai",
+        "ap-shanghai",
+        "ap-shanghai-fsi",
+        "ap-shenzhen-fsi",
+        "ap-singapore",
+        "ap-tokyo",
+        "na-siliconvalley",
+        "na-toronto"
+      ],
+      "type": "string"
+    },
+    "ScfInput": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "anyOf": [
+            { "$ref": "#/definitions/BucketSrc" },
+            { "$ref": "#/definitions/ZiptSrc" },
+            { "type": "string" }
+          ]
+        },
+        "runtime": { "$ref": "#/definitions/NodeRuntime" },
+        "handler": { "type": "string" },
+        "name": { "type": "string" },
+        "namesapce": { "type": "string" },
+        "enableRoleAuth": { "type": "boolean" },
+        "role": { "type": "string" },
+        "events": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": { "$ref": "#/definitions/TimerTrigger" }
+            },
+            {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ApiGwTrigger" }
+            },
+            {
+              "type": "array",
+              "items": { "$ref": "#/definitions/CosTrigger" }
+            },
+            { "type": "array", "items": { "$ref": "#/definitions/CmqTigger" } },
+            { "type": "array", "items": { "$ref": "#/definitions/KfkTrigger" } }
+          ]
+        },
+        "description": { "type": "string" },
+        "memorySize": {
+          "description": "memory size scope: 64、128MB-3072MB,以128MB为阶梯",
+          "minimum": 64,
+          "maximum": 3072,
+          "type": "number"
+        },
+        "timeout": {
+          "description": "timeout scope: 1~900s",
+          "minimum": 1,
+          "maximum": 900,
+          "type": "number"
+        },
+        "environment": { "$ref": "#/definitions/EnvVariable" },
+        "vpcConfig": { "$ref": "#/definitions/VpcConfig" },
+        "layers": { "$ref": "#/definitions/Layer" },
+        "deadLetter": { "$ref": "#/definitions/DeadLetter" },
+        "cls": { "$ref": "#/definitions/Cls" },
+        "eip": { "type": "boolean" },
+        "tags": { "type": "array", "items": { "$ref": "#/definitions/Tag" } },
+        "traffic": {
+          "description": "traffic scope: 0~1，e.g.: 80% set to 0.8",
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "region": { "$ref": "#/definitions/Region" }
+      },
+      "required": ["handler", "name", "region", "runtime", "src"]
+    },
+    "NodeRuntime": {
+      "enum": ["Nodejs10.15", "Nodejs12.16", "Nodejs6.10", "Nodejs8.9"],
+      "type": "string"
+    },
+    "TimerTrigger": {
+      "type": "object",
+      "properties": {
+        "timer": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "cronExpression": { "type": "string" },
+                "enable": { "type": "boolean" },
+                "argument": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              },
+              "required": ["cronExpression"]
+            }
+          },
+          "required": ["name", "parameters"]
+        }
+      },
+      "required": ["timer"]
+    },
+    "ApiGwTrigger": {
+      "type": "object",
+      "properties": {
+        "apigw": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "parameters": { "$ref": "#/definitions/GwParam" }
+          },
+          "required": ["name", "parameters"]
+        }
+      },
+      "required": ["apigw"]
+    },
+    "GwParam": {
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Endpoint" }
+        },
+        "environment": { "$ref": "#/definitions/Environment" },
+        "protocols": {
+          "type": "array",
+          "items": { "enum": ["http", "https"], "type": "string" }
+        },
+        "description": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "serviceName": { "type": "string" }
+      },
+      "required": ["endpoints", "environment"]
+    },
+    "Endpoint": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "method": { "$ref": "#/definitions/HttpMethod" },
+        "apiId": { "type": "string" },
+        "description": { "type": "string" },
+        "enableCORS": { "type": "boolean" },
+        "responseType": {
+          "enum": ["BINARY", "HTML", "JSON", "TEST", "XML"],
+          "type": "string"
+        },
+        "serviceTimeout": { "type": "integer" },
+        "param": { "$ref": "#/definitions/FrontendParam" },
+        "function": { "$ref": "#/definitions/ScfParam" },
+        "usagePlan": { "$ref": "#/definitions/UsagePlanConfig" },
+        "auth": { "$ref": "#/definitions/AuthConfig" }
+      },
+      "required": ["method", "path", "serviceTimeout"]
+    },
+    "HttpMethod": {
+      "enum": ["DELETE", "GET", "HEAD", "POST", "PUT"],
+      "type": "string"
+    },
+    "FrontendParam": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "required": { "enum": ["FALSE", "TRUE"], "type": "string" },
+        "type": { "type": "string" },
+        "defaultValue": { "type": "string" },
+        "desc": { "type": "string" }
+      }
+    },
+    "ScfParam": {
+      "type": "object",
+      "properties": {
+        "isIntegratedResponse": { "type": "boolean" },
+        "functionQualifier": { "type": "string" }
+      }
+    },
+    "UsagePlanConfig": {
+      "type": "object",
+      "properties": {
+        "usagePlanId": { "type": "string" },
+        "usagePlanName": { "type": "string" },
+        "usagePlanDesc": { "type": "string" },
+        "maxRequestNum": { "type": "integer" }
+      }
+    },
+    "AuthConfig": {
+      "type": "object",
+      "properties": {
+        "secretName": { "type": "string" },
+        "secretIds": { "type": "string" }
+      },
+      "required": ["secretName"]
+    },
+    "Environment": { "enum": ["prepub", "release", "test"], "type": "string" },
+    "CosTrigger": {
+      "type": "object",
+      "properties": {
+        "cos": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "parameters": { "$ref": "#/definitions/CosParam" }
+          },
+          "required": ["name", "parameters"]
+        }
+      },
+      "required": ["cos"]
+    },
+    "CosParam": {
+      "type": "object",
+      "properties": {
+        "bucket": { "type": "string" },
+        "filter": {
+          "type": "object",
+          "properties": {
+            "prefix": { "type": "string" },
+            "suffix": { "type": "string" }
+          },
+          "required": ["prefix", "suffix"]
+        },
+        "events": { "type": "string" },
+        "enable": { "type": "boolean" }
+      },
+      "required": ["bucket", "events", "filter"]
+    },
+    "CmqTigger": {
+      "type": "object",
+      "properties": {
+        "cmq": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "enable": { "type": "boolean" }
+              },
+              "required": ["name"]
+            }
+          },
+          "required": ["name", "parameters"]
+        }
+      },
+      "required": ["cmq"]
+    },
+    "KfkTrigger": {
+      "type": "object",
+      "properties": {
+        "ckafka": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "parameters": { "$ref": "#/definitions/KfkParam" }
+          },
+          "required": ["name", "parameters"]
+        }
+      },
+      "required": ["ckafka"]
+    },
+    "KfkParam": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "topic": { "type": "string" },
+        "maxMsgNum": { "type": "integer" },
+        "offset": { "type": "string" },
+        "enable": { "type": "boolean" }
+      },
+      "required": ["maxMsgNum", "name", "offset", "topic"]
+    },
+    "EnvVariable": {
+      "type": "object",
+      "properties": {
+        "variables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": ["variables"]
+    },
+    "VpcConfig": {
+      "type": "object",
+      "properties": {
+        "vpcId": { "type": "string" },
+        "subnetId": { "type": "string" }
+      },
+      "required": ["subnetId", "vpcId"]
+    },
+    "Layer": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "DeadLetter": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "name": { "type": "string" },
+        "filterType": { "type": "string" }
+      },
+      "required": ["name", "type"]
+    },
+    "Cls": {
+      "type": "object",
+      "properties": {
+        "logsetId": { "type": "string" },
+        "topicId": { "type": "string" }
+      },
+      "required": ["logsetId", "topicId"]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
