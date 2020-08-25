@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/LinLzis/sls-yml-validator/compare/v1.3.0...v1.3.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* simplify semantic release config ([f03fb42](https://github.com/LinLzis/sls-yml-validator/commit/f03fb42970c8957c42837a3e4f56e3f87d4b084c))
+
 # [1.3.0](https://github.com/LinLzis/sls-yml-validator/compare/v1.2.2...v1.3.0) (2020-08-25)
 
 
