@@ -1,6 +1,4 @@
 /* 
-const test = ''
-
 const CosTestData1 = {
   org: 'orgDemo',
   app: 'appDemo',
