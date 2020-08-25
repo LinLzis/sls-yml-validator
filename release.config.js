@@ -53,8 +53,7 @@ module.exports = {
     [
       '@semantic-release/github',
       {
-        // assets: ['!.env']
-        assets: [{ path: 'src/builder.ts', label: 'entry ts' }]
+        assets: ['!.env']
       }
     ]
   ]
