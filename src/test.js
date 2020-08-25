@@ -1,4 +1,7 @@
-/* const CosTestData1 = {
+/* 
+const test = ''
+
+const CosTestData1 = {
   org: 'orgDemo',
   app: 'appDemo',
   stage: 'dev',
