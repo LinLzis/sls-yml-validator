@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/LinLzis/sls-yml-validator/compare/v1.2.1...v1.2.2) (2020-08-25)
+
+
+### Bug Fixes
+
+* update release config ([9bfefd0](https://github.com/LinLzis/sls-yml-validator/commit/9bfefd021905cb5e1ff967528b98908661f08749))
+
 ## [1.2.1](https://github.com/LinLzis/sls-yml-validator/compare/v1.2.0...v1.2.1) (2020-08-25)
 
 
