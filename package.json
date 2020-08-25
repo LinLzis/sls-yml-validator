@@ -10,7 +10,6 @@
     "lint:fix": "eslint --fix --ext .js .",
     "prettier": "prettier --check '**/*.{css,html,js,json,md,yaml,yml}'",
     "prettier:fix": "prettier --write '**/*.{css,html,js,json,md,yaml,yml}'",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "release": "semantic-release",
     "release-local": "node -r dotenv/config node_modules/semantic-release/bin/semantic-release --no-ci --dry-run"
   },
