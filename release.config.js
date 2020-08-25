@@ -25,6 +25,7 @@ module.exports = {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES', 'BREAKING']
         },
         writerOpts: {
+          version: 'v0.0.4',
           commitsSort: ['subject', 'scope']
         }
       }
