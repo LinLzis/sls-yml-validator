@@ -14,6 +14,7 @@ module.exports = {
         parserOpts: {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES', 'BREAKING']
         }
+        // releaseRules: [{ type: 'feat', release: 'patch' }]
       }
     ],
     [
@@ -24,7 +25,6 @@ module.exports = {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES', 'BREAKING']
         },
         writerOpts: {
-          version: '0.0.4',
           commitsSort: ['subject', 'scope']
         }
       }
