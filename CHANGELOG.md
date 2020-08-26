@@ -1,3 +1,19 @@
+# [0.1.0](https://github.com/LinLzis/sls-yml-validator/compare/v0.0.3...v0.1.0) (2020-08-26)
+
+
+### Bug Fixes
+
+* simplify semantic release config ([f03fb42](https://github.com/LinLzis/sls-yml-validator/commit/f03fb42970c8957c42837a3e4f56e3f87d4b084c))
+* test change release ([71118c0](https://github.com/LinLzis/sls-yml-validator/commit/71118c04699ca578a8a56e461d1dfe90458ae499))
+* test init version ([e80bd6c](https://github.com/LinLzis/sls-yml-validator/commit/e80bd6ca6cdca458b79a33e55770ffbfa8a917eb))
+* test init version again ([f09930d](https://github.com/LinLzis/sls-yml-validator/commit/f09930d5bc8ab4ae334009c4d170a9acd5c95a7f))
+* test update test ([4cbece5](https://github.com/LinLzis/sls-yml-validator/commit/4cbece52490e57278d47498ac594255b234be363))
+
+
+### Features
+
+* update semantic release version. ([d308846](https://github.com/LinLzis/sls-yml-validator/commit/d30884638bb25ee67ca1c04af7474f7dc48ac1a0))
+
 # 1.0.0 (2020-08-25)
 
 
